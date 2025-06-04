@@ -1,73 +1,113 @@
-# Tech-Assessment – Book Reviews Platform
+# Book Reviews Platform
 
-**Goal**  
-Build a small “Book Reviews” platform (CRUD books + reviews, plus an endpoint that returns the top-rated books).
+A fullstack web application to explore books and leave reviews, built with modern tech from frontend to backend.
 
-| Stack (mandatory) | Why |
-|-------------------|-----|
-| NestJS + MongoDB  | API, data layer & aggregation |
-| Next.js (App Router) | UI & SSR |
-| React Query       | Data fetching / cache |
-| Tailwind CSS      | Styling |
-
-> **Time-box:** aim for **4-8 h** of focused work.  
-> When time is up, push what you have — unfinished is OK, but document what’s missing.
+> Backend: **NestJS**  
+> Frontend: **Next.js (App Router)**  
+> Database: **MongoDB**  
+> DevOps: **Docker Compose**  
 
 ---
 
-## 1. What you must deliver
+## Features
 
-| Area | Minimum requirements |
-|------|----------------------|
-| **Backend** | *Connect to MongoDB* via env var<br>*Models*: `Book`, `Review` (rating 1-5)<br>*CRUD* endpoints for both entities (`/books`, `/books/:id/reviews`)<br>*Aggregation*: `GET /books/top?limit=10` returns avgRating + reviewCount, sorted desc<br>*Tests*: at least **one** e2e test hitting `/books/top` |
-| **Frontend** | `/books` page listing the top books (uses React Query)<br>Book detail page showing reviews and a form to add a review (optimistic update welcome)<br>Responsive UI with Tailwind |
-| **DX / Ops** | Clear local-dev instructions (README or Makefile)<br>`.env.example` with all needed vars<br>Lint + format commands<br>(Optional) Docker setup |
+- List books with average ratings  
+- Book detail pages with user reviews  
+- Submit reviews with form validation   
+- Data cached and refreshed with React Query  
+- Seed script for demo data  
 
 ---
 
-## 2. Local setup expected by reviewers
+## Running the App
+
+### Option 1: With Docker (Recommended)
 
 ```bash
-pnpm install          # monorepo or multiple projects — you choose
-pnpm dev              # should start both backend and frontend
-# backend on :3001, frontend on :3000 is a common pattern
+git clone https://github.com/lucasbachega/teste-fullstack.git
+cd teste-fullstack
+docker compose up --build -d
+docker compose exec backend npm run seed 
 ```
 
-If you rely on Docker (e.g. docker compose up mongo), document it.
+Docker Compose will:
+- Start the **frontend** on `http://localhost:3500`
+- Start the **backend** on `http://localhost:9100`
+- Start **MongoDB**
+- Auto-seed the DB with demo data
 
-⸻
+---
 
-## 3. Submission guidelines
-1.	Fork this repo, build on main.
-2.	Open a pull request to your own fork when finished. In the PR description include:
-  - (i) What is done / not done,
-  - (ii)	How to run tests and
-  - (iii)	Any trade-offs or shortcuts
-3.	Do not open a PR against the original repo.
+### Option 2: Manual Setup
 
-⸻
+#### Install Dependencies
 
-## 4. Evaluation rubric
+```bash
+cd backend && npm install
+cd frontend && npm install
+```
 
-Criterion	Weight
+#### Configure Environment Variables
 
-- Correctness & tests	30 %
-- Code quality / structure	20 %
-- Data modelling & validation	15 %
-- Aggregation query efficiency	10 %
-- Frontend UX & accessibility	15 %
-- Documentation	10 %
+**Backend → `backend/.env`:**
 
+```env
+PORT=9100
+MONGO_URI=mongodb://localhost:27017/book-reviews
+```
 
-⸻
+**Frontend → `frontend/.env.local`:**
 
-## 5. Constraints & tips
+```env
+NEXT_PUBLIC_API_URL=http://localhost:9100
+```
 
--	TypeScript everywhere.
--	Keep third-party libs minimal (testing & dev-tools are fine).
--	Commit early & often — we read history.
--	Feel free to use dev-containers / Codespaces; just explain how.
+#### Run Servers
 
-⸻
+```bash
+# Backend
+cd backend
+npm run start:dev
 
-Good luck 🚀
+# Frontend
+cd frontend
+npm run dev
+```
+
+---
+
+#### Tests e2e
+
+To run the backend **end-to-end (E2E) tests**, follow these steps:
+
+1. Create a `.env` file inside the `backend/` folder:
+2. Add your test database connection string to it:
+
+MONGO_URI=mongodb://localhost:27017/bookreviews_test
+
+> Make sure MongoDB is running locally and the `bookreviews_test` database is available.
+
+3. Inside the `backend/` folder, run:
+
+npm run test:e2e
+
+This will run the Jest test suite using the test database.
+
+---
+
+## Seeding Data
+
+```bash
+cd backend
+npm run seed
+```
+
+---
+
+## Stack Summary
+
+- NestJS + MongoDB
+- Next.js + React Query
+- Zod + RHF for forms
+- TailwindCSS
+- Docker
