@@ -60,11 +60,6 @@ npm install
 # Crie o arquivo .env
 cp .env.example .env
 
-# Configure o usuário e senha do banco em migrate-mongo-config
-
-# Conexão com o banco
-npx migrate-mongo up
-
 # Configure as variáveis de ambiente no arquivo .env
 # Exemplo:
 # MONGODB_URI=mongodb://localhost:27017/hubxp
